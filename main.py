@@ -3,34 +3,45 @@ import requests
 from bs4 import BeautifulSoup
 
 # List of URLs to scrape
-urls = [
+url_list = [
     'https://www.example.com',
     'https://www.example.net',
     'https://www.example.org'
 ]
 
-# Regular expression pattern to match email addresses
-email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
-# Dictionary to store email addresses for each URL
-email_dict = {}
+def email_scraper(url_list):
+    # Regular expression pattern to match email addresses
+    email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
-# Loop through each URL
-for url in urls:
-    # Make a GET request to the URL
-    response = requests.get(url)
+    # Dictionary to store email addresses for each URL
+    email_dict = {}
 
-    # Parse the HTML content using Beautiful Soup
-    soup = BeautifulSoup(response.content, 'html.parser')
+    # Loop through each URL
+    for url in url_list:
+        # Make a GET request to the URL
+        response = requests.get(url)
 
-    # Find all text in the HTML document
-    text = soup.get_text()
+        # Parse the HTML content using Beautiful Soup
+        soup = BeautifulSoup(response.content, 'html.parser')
 
-    # Find all email addresses using regular expressions
-    email_addresses = re.findall(email_regex, text)
+        # Find all text in the HTML document
+        text = soup.get_text()
 
-    # Add the email addresses to the dictionary
-    email_dict[url] = email_addresses
+        # Find all email addresses using regular expressions
+        email_addresses = re.findall(email_regex, text)
 
-# Print the dictionary of email addresses for each URL
-print(email_dict)
+        # Add the email addresses to the dictionary
+        email_dict[url] = email_addresses
+
+    # Print the dictionary of email addresses for each URL
+    print(email_dict)
+
+
+def main():
+    """ This is the main function."""
+    email_scraper(url_list)
+
+
+if __name__ == "__main__":
+    main()
